@@ -28,6 +28,7 @@
  * be the same as any of the input pointers
  */
 
+/* set out to the identity quaternion <0 0 0 1> */
 void quaterion_identity(
         struct quaternion * out
     ) [[gnu::nonnull(1)]]
@@ -40,6 +41,7 @@ void quaterion_identity(
     };
 }
 
+/* set out to the product of a and b */
 void quaternion_mul(
         struct quaternion * out,
         const struct quaternion * a,
@@ -54,6 +56,9 @@ void quaternion_mul(
     };
 }
 
+/* set out to a, normalized: out is a with all components divided by m such
+ * that the sum of the squares of components of out is 1
+ */
 void quaternion_normalize(
         struct quaternion * out,
         const struct quaternion * a
@@ -69,6 +74,9 @@ void quaternion_normalize(
     };
 }
 
+/* set out to the conjugate of a. if a is a unit quaternion, the conjugate
+ * is its inverse
+ */
 void quaternion_conjugate(
         struct quaternion * out,
         const struct quaternion * a
@@ -82,6 +90,7 @@ void quaternion_conjugate(
     };
 }
 
+/* set matrix to the matrix form of a */
 void quaternion_matrix(
         struct matrix * matrix,
         const struct quaternion * a
@@ -110,6 +119,9 @@ void quaternion_matrix(
     }};
 }
 
+/* set out to the quaternion calculated from rotation theta around axis
+ * (ax, ay, az)
+ */
 void quaternion_from_axis_angle(
         struct quaternion * out,
         double ax,
@@ -127,6 +139,7 @@ void quaternion_from_axis_angle(
     };
 }
 
+/* set out to the identiy matrix */
 void matrix_identity(
         struct matrix * out
     ) [[gnu::nonnull(1)]]
@@ -139,6 +152,7 @@ void matrix_identity(
     }};
 }
 
+/* set out to a translation matrix for vector <x y z> */
 void matrix_translation(
         struct matrix * out,
         matrix_element x,
@@ -154,6 +168,7 @@ void matrix_translation(
     }};
 }
 
+/* set out to a perspective matrix with these properties */
 void matrix_perspective(
         struct matrix * out,
         matrix_element z_far,
@@ -170,6 +185,7 @@ void matrix_perspective(
     }};
 }
 
+/* set out to the product of a and b */
 void matrix_multiply(
         struct matrix * out,
         const struct matrix * a,

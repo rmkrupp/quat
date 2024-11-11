@@ -32,13 +32,18 @@
  * all matrix arguments are 4x4 (16-element) matrices
  */
 
+/* quaternions are four-vectors made of this element type */
 typedef double quaternion_element;
+
+/* matrices are sixteen-vectors (4x4) made of this element type */
 typedef float matrix_element;
 
+/* a 4x4 matrix */
 struct matrix {
     matrix_element matrix[16];
 };
 
+/* a quaternion */
 struct quaternion {
     quaternion_element x,
                        y,
@@ -46,31 +51,43 @@ struct quaternion {
                        w;
 };
 
+/* set out to the identity quaternion <0 0 0 1> */
 void quaterion_identity(
         struct quaternion * out
     ) [[gnu::nonnull(1)]];
 
+/* set out to the product of a and b */
 void quaternion_mul(
         struct quaternion * out,
         const struct quaternion * a,
         const struct quaternion * b
     ) [[gnu::nonnull(1, 2, 3)]];
 
+/* set out to a, normalized: out is a with all components divided by m such
+ * that the sum of the squares of components of out is 1
+ */
 void quaternion_normalize(
         struct quaternion * out,
         const struct quaternion * a
     ) [[gnu::nonnull(1, 2)]];
 
+/* set out to the conjugate of a. if a is a unit quaternion, the conjugate
+ * is its inverse
+ */
 void quaternion_conjugate(
         struct quaternion * out,
         const struct quaternion * a
     ) [[gnu::nonnull(1, 2)]];
 
+/* set matrix to the matrix form of a */
 void quaternion_to_matrix(
         struct matrix * matrix,
         const struct quaternion * a
     ) [[gnu::nonnull(1, 2)]];
 
+/* set out to the quaternion calculated from rotation theta around axis
+ * (ax, ay, az)
+ */
 void quaternion_from_axis_angle(
         struct quaternion * out,
         double ax,
@@ -79,10 +96,12 @@ void quaternion_from_axis_angle(
         double theta
     ) [[gnu::nonnull(1)]];
 
+/* set out to the identiy matrix */
 void matrix_identity(
         struct matrix * out
     ) [[gnu::nonnull(1)]];
 
+/* set out to a translation matrix for vector <x y z> */
 void matrix_translation(
         struct matrix * out,
         matrix_element x,
@@ -90,6 +109,7 @@ void matrix_translation(
         matrix_element z
     ) [[gnu::nonnull(1)]];
 
+/* set out to a perspective matrix with these properties */
 void matrix_perspective(
         struct matrix * out,
         matrix_element z_far,
@@ -98,6 +118,7 @@ void matrix_perspective(
         matrix_element aspect
     ) [[gnu::nonnull(1)]];
 
+/* set out to the product of a and b */
 void matrix_multiply(
         struct matrix * out,
         const struct matrix * a,
