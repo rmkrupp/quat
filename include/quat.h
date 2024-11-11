@@ -29,7 +29,6 @@
  * for all these functions, it is perfectly fine for the output pointer to
  * be the same as any of the input pointers of the same type
  *
- * all matrix arguments are 4x4 (16-element) matrices
  */
 
 /* quaternions are four-vectors made of this element type */
