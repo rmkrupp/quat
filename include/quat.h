@@ -51,6 +51,11 @@ struct quaternion {
                        w;
 };
 
+/* the magnitude (length) of the quaternion; if 1, it is a unit quaternion */
+quaternion_element quaternion_magnitude(
+        const struct quaternion * a
+    ) [[gnu::nonnull(1)]];
+
 /* set out to the identity quaternion <0 0 0 1> */
 void quaterion_identity(
         struct quaternion * out

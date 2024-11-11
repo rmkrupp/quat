@@ -28,6 +28,14 @@
  * be the same as any of the input pointers
  */
 
+/* the magnitude (length) of the quaternion; if 1, it is a unit quaternion */
+quaternion_element quaternion_magnitude(
+        const struct quaternion * a
+    ) [[gnu::nonnull(1)]]
+{
+    return sqrt(a->x * a->x + a->y * a->y + a->z * a->z + a->w * a->w);
+}
+
 /* set out to the identity quaternion <0 0 0 1> */
 void quaterion_identity(
         struct quaternion * out
