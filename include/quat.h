@@ -31,11 +31,35 @@
  *
  */
 
+/* vec2, vec3, and vec4 are made out of this element */
+typedef float vector_element;
+
 /* quaternions are four-vectors made of this element type */
 typedef double quaternion_element;
 
 /* matrices are sixteen-vectors (4x4) made of this element type */
 typedef float matrix_element;
+
+/* a 2-element vector */
+struct vec2 {
+    vector_element x,
+                   y;
+};
+
+/* a 3-element vector */
+struct vec3 {
+    vector_element x,
+                   y,
+                   z;
+};
+
+/* a 4-element vector */
+struct vec4 {
+    vector_element x,
+                   y,
+                   z,
+                   w;
+};
 
 /* a 4x4 matrix */
 struct matrix {
@@ -128,5 +152,36 @@ void matrix_multiply(
         const struct matrix * a,
         const struct matrix * b
     ) [[gnu::nonnull(1, 2, 3)]];
+
+/* length of a vec2 */
+vector_element vec2_length(const struct vec2 * u);
+
+/* normalize a vec2 */
+void vec2_normalize(struct vec2 * out, struct vec2 * u);
+
+/* dot product of two vec2s */
+vector_element vec2_dot(const struct vec2 * u, const struct vec2 * v);
+
+/* length of a vec3 */
+vector_element vec3_length(const struct vec3 * u);
+
+/* normalize a vec3 */
+void vec3_normalize(struct vec3 * out, struct vec3 * u);
+
+/* dot product of two vec3s */
+vector_element vec3_dot(const struct vec3 * u, const struct vec3 * v);
+
+/* cross product of two vec3s */
+void vec3_cross(
+        struct vec3 * out, const struct vec3 * u, const struct vec3 * v);
+
+/* length of a vec4 */
+vector_element vec4_length(const struct vec4 * u);
+
+/* normalize a vec4 */
+void vec4_normalize(struct vec4 * out, struct vec4 * u);
+
+/* dot product of two vec4s */
+vector_element vec4_dot(const struct vec4 * u, const struct vec4 * v);
 
 #endif /* HASH_H */
