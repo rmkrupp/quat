@@ -37,7 +37,7 @@ quaternion_element quaternion_magnitude(
 }
 
 /* set out to the identity quaternion <0 0 0 1> */
-void quaterion_identity(
+void quaternion_identity(
         struct quaternion * out
     ) [[gnu::nonnull(1)]]
 {
@@ -179,8 +179,8 @@ void matrix_translation(
 /* set out to a perspective matrix with these properties */
 void matrix_perspective(
         struct matrix * out,
-        matrix_element z_far,
         matrix_element z_near,
+        matrix_element z_far,
         matrix_element f_scale,
         matrix_element aspect
     ) [[gnu::nonnull(1)]]

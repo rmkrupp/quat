@@ -80,12 +80,12 @@ quaternion_element quaternion_magnitude(
     ) [[gnu::nonnull(1)]];
 
 /* set out to the identity quaternion <0 0 0 1> */
-void quaterion_identity(
+void quaternion_identity(
         struct quaternion * out
     ) [[gnu::nonnull(1)]];
 
 /* set out to the product of a and b */
-void quaternion_mul(
+void quaternion_multiply(
         struct quaternion * out,
         const struct quaternion * a,
         const struct quaternion * b
@@ -108,7 +108,7 @@ void quaternion_conjugate(
     ) [[gnu::nonnull(1, 2)]];
 
 /* set matrix to the matrix form of a */
-void quaternion_to_matrix(
+void quaternion_matrix(
         struct matrix * matrix,
         const struct quaternion * a
     ) [[gnu::nonnull(1, 2)]];
@@ -140,8 +140,8 @@ void matrix_translation(
 /* set out to a perspective matrix with these properties */
 void matrix_perspective(
         struct matrix * out,
-        matrix_element z_far,
         matrix_element z_near,
+        matrix_element z_far,
         matrix_element f_scale,
         matrix_element aspect
     ) [[gnu::nonnull(1)]];
