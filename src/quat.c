@@ -237,7 +237,6 @@ void quaternion_from_vectors(
     }
 }
 
-/* TODO */
 /* spherical linear interpolation of two quaternions */
 void quaternion_slerp(
         struct quaternion * out,
@@ -246,11 +245,50 @@ void quaternion_slerp(
         quaternion_element t
     ) [[gnu::nonnull(1, 2, 3)]]
 {
-    /* TODO */
-    (void)out;
-    (void)a;
-    (void)b;
-    (void)t;
+    quaternion_element cos_half_theta =
+        a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
+
+    if (abs(cos_half_theta) >= 1.0) {
+        *out = *a;
+        return;
+    }
+
+    struct quaternion b2;
+    if (cos_half_theta < 0) {
+        b2 = (struct quaternion) {
+            .x = -b->x,
+            .y = -b->y,
+            .z = b->z,
+            .w = -b->w;
+        };
+    } else {
+        bw = *b;
+    }
+
+    quaternion_element half_theta = acos(cos_half_theta);
+    quaternion_element sin_half_theta =
+        sqrt(1.0 - cos_half_theta * cos_half_theta);
+
+    /* some arbitrary cutoff constant */
+    if (abs(sin_half_theta) < 1e-12) {
+        *out = (struct quaternion) {
+            .x = (a->x + b->x) / 2,
+            .y = (a->y + b->y) / 2,
+            .z = (a->z + b->z) / 2,
+            .w = (a->w + b->w) / 2
+        };
+        return;
+    }
+
+    quaternion_element ratio_a = sin((1 - t) * half_theta) / sin_half_theta;
+    quaternion_element ratio_b = sin(t * half_theta) / sin_half_theta;
+
+    *out = (struct quaternion) {
+        .x = a->x * ratio_a + b->x * ratio_b,
+        .y = a->y * ratio_a + b->y * ratio_b,
+        .z = a->z * ratio_a + b->z * ratio_b,
+        .w = a->w * ratio_a + b->w * ratio_b,
+    };
 }
 
 /* set out to the identiy matrix */
