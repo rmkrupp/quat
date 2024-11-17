@@ -320,7 +320,7 @@ int main(int argc, char ** argv)
         struct quaternion out;
         quaternion_multiply(&out, &a, &b);
         printf("output = %s\n", strof_q(&out));
-        expect_q(&out, &(struct quaternion) { 9.0, 19.0, 13.0, -13.0 }); 
+        expect_q(&out, &(struct quaternion) { 9.0, 19.0, 13.0, -13.0 });
     }
     printf("\n");
 
@@ -330,7 +330,7 @@ int main(int argc, char ** argv)
         struct quaternion out;
         quaternion_multiply(&out, &a, &b);
         printf("output = %s\n", strof_q(&out));
-        expect_q(&out, &(struct quaternion) { 55.0, 5.0, 85.0, 15.0 }); 
+        expect_q(&out, &(struct quaternion) { 55.0, 5.0, 85.0, 15.0 });
     }
 
 
