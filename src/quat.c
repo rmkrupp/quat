@@ -49,7 +49,21 @@ void quaternion_identity(
     };
 }
 
-/* set out to the product of a and b */
+/* set out to the product of a and b
+ *
+ * this is equivalent to:
+ *
+ * vec3 s1v2 = a.w * <b.x b.y b.z>
+ * vec3 s2v1 = b.w * <a.x a.y a.z>
+ * vec3 cross = <a.x a.y a.z> x <b.x b.y b.z>
+ * out = {
+ *     .x = cross.x + a.w * b.x + b.w * a.x,
+ *     .y = cross.y + a.w * b.y + b.w * a.y,
+ *     .z = cross.z + a.w * b.z + b.w * a.z,
+ *     .w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z
+ * }
+ *
+ */
 void quaternion_multiply(
         struct quaternion * out,
         const struct quaternion * a,
@@ -57,12 +71,13 @@ void quaternion_multiply(
     ) [[gnu::nonnull(1, 2)]]
 {
     *out = (struct quaternion) {
-        .x = a->w * b->x + a->x * b->w + a->y * b->z - a->z * b->y,
-        .y = a->w * b->y + a->y * b->w + a->z * b->x - a->x * b->z,
-        .z = a->w * b->z + a->z * b->w + a->x * b->y - a->y * b->x,
+        .x = a->w * b->x + b->w * a->x + a->y * b->z - a->z * b->y,
+        .y = a->w * b->y + b->w * a->y - a->x * b->z + a->z * b->x,
+        .z = a->w * b->z + b->w * a->z + a->x * b->y - a->y * b->x,
         .w = a->w * b->w - a->x * b->x - a->y * b->y - a->z * b->z
     };
 }
+
 
 /* set out to a, normalized: out is a with all components divided by m such
  * that the sum of the squares of components of out is 1
@@ -371,7 +386,7 @@ void vec3_cross(
 {
     *out = (struct vec3) {
         .x = u->y * v->z - u->z * v->y,
-        .y = u->z * v->x - u->x * v->y,
+        .y = - (u->x * v->z - u->z * v->x),
         .z = u->x * v->y - u->y * v->x
     };
 }

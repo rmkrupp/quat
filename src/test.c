@@ -121,6 +121,17 @@ void expect_vec3(const struct vec3 * a, const struct vec3 * b)
     }
 }
 
+void expect_q(const struct quaternion * a, const struct quaternion * b)
+{
+    if (fabs(a->x - b->x) > accuracy ||
+        fabs(a->y - b->y) > accuracy ||
+        fabs(a->z - b->z) > accuracy ||
+        fabs(a->w - b->w) > accuracy) {
+        printf("UNEXPECTED: %s != %s\n", strof_q(a), strof_q(b));
+        unexpected++;
+    }
+}
+
 int main(int argc, char ** argv)
 {
     (void)argc;
@@ -301,6 +312,28 @@ int main(int argc, char ** argv)
         printf("output = %s\n", strof_v3(&v));
         expect_vec3(&v, &(struct vec3){0, 0, -1});
     }
+    printf("\n");
+
+    {
+        struct quaternion a = { 1.0, 2.0, 4.0, 3.0 };
+        struct quaternion b = { 3.0, 2.0, 3.0, 2.0 };
+        struct quaternion out;
+        quaternion_multiply(&out, &a, &b);
+        printf("output = %s\n", strof_q(&out));
+        expect_q(&out, &(struct quaternion) { 9.0, 19.0, 13.0, -13.0 }); 
+    }
+    printf("\n");
+
+    {
+        struct quaternion a = { 2.0, 1.0, 7.0, 4.0 };
+        struct quaternion b = { 2.0, -3.0, 4.0, 11.0 };
+        struct quaternion out;
+        quaternion_multiply(&out, &a, &b);
+        printf("output = %s\n", strof_q(&out));
+        expect_q(&out, &(struct quaternion) { 55.0, 5.0, 85.0, 15.0 }); 
+    }
+
+
     printf("\n");
 
     printf("%zu unexpected\n", unexpected);
