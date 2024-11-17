@@ -257,6 +257,52 @@ int main(int argc, char ** argv)
     }
     printf("\n");
 
+    {
+        struct vec4 u = { .x = 0.0, .y = 0.0, .z = 1.0, .w = 1.0 };
+        printf("input = %s\n", strof_v4(&u));
+        quaternion_from_axis_angle(&a, 0.0, 1.0, 0.0, M_PI / 10);
+        printf("rotate by x axis, pi / 10 x 10\n");
+        printf("quaternion a = %s\n", strof_q(&a));
+        struct quaternion b;
+        quaternion_identity(&b);
+        for (size_t i = 0; i < 10; i++) {
+            quaternion_multiply(&b, &b, &a);
+        }
+        quaternion_normalize(&b, &b);
+        printf("quaternion b = %s\n", strof_q(&b));
+        quaternion_matrix(&m, &b);
+        printf("as matrix =\n%s\n", strof_m(&m));
+        matrix_multiply_vec4(&u, &m, &u);
+        printf("as vec4 = %s\n", strof_v4(&u));
+        struct vec3 v = { .x = u.x / u.w, .y = u.y / u.w, .z = u.z / u.w };
+        printf("output = %s\n", strof_v3(&v));
+        expect_vec3(&v, &(struct vec3){0, 0, -1});
+    }
+    printf("\n");
+
+    {
+        struct vec4 u = { .x = 0.0, .y = 0.0, .z = 1.0, .w = 1.0 };
+        printf("input = %s\n", strof_v4(&u));
+        quaternion_from_axis_angle(&a, 1.0, 0.0, 0.0, M_PI / 10);
+        printf("rotate by x axis, pi / 10 x 10\n");
+        printf("quaternion a = %s\n", strof_q(&a));
+        struct quaternion b;
+        quaternion_identity(&b);
+        for (size_t i = 0; i < 10; i++) {
+            quaternion_multiply(&b, &b, &a);
+        }
+        quaternion_normalize(&b, &b);
+        printf("quaternion b = %s\n", strof_q(&b));
+        quaternion_matrix(&m, &b);
+        printf("as matrix =\n%s\n", strof_m(&m));
+        matrix_multiply_vec4(&u, &m, &u);
+        printf("as vec4 = %s\n", strof_v4(&u));
+        struct vec3 v = { .x = u.x / u.w, .y = u.y / u.w, .z = u.z / u.w };
+        printf("output = %s\n", strof_v3(&v));
+        expect_vec3(&v, &(struct vec3){0, 0, -1});
+    }
+    printf("\n");
+
     printf("%zu unexpected\n", unexpected);
 
     free_string_pool();
