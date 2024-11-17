@@ -50,7 +50,7 @@ void quaternion_identity(
 }
 
 /* set out to the product of a and b */
-void quaternion_mul(
+void quaternion_multiply(
         struct quaternion * out,
         const struct quaternion * a,
         const struct quaternion * b
