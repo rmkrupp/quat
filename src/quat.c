@@ -153,7 +153,7 @@ void quaternion_from_unit_vectors(
         struct quaternion * out,
         const struct vec3 * u,
         const struct vec3 * v
-    )
+    ) [[gnu::nonnull(1, 2, 3)]]
 {
     /* TODO */
     (void)out;
@@ -168,7 +168,7 @@ void quaternion_slerp(
         const struct quaternion * a,
         const struct quaternion * b,
         quaternion_element t
-    )
+    ) [[gnu::nonnull(1, 2, 3)]]
 {
     /* TODO */
     (void)out;
@@ -314,13 +314,14 @@ void matrix_multiply(
 }
 
 /* length of a vec2 */
-vector_element vec2_length(const struct vec2 * u)
+vector_element vec2_length(const struct vec2 * u) [[gnu::nonnull(1)]]
 {
     return sqrt(u->x * u->x + u->y * u->y);
 }
 
 /* normalize a vec2 */
-void vec2_normalize(struct vec2 * out, struct vec2 * u)
+void vec2_normalize(
+        struct vec2 * out, const struct vec2 * u) [[gnu::nonnull(1, 2)]]
 {
     vector_element m = sqrt(u->x * u->x + u->y * u->y);
     *out = (struct vec2) {
@@ -330,19 +331,21 @@ void vec2_normalize(struct vec2 * out, struct vec2 * u)
 }
 
 /* dot product of two vec2s */
-vector_element vec2_dot(const struct vec2 * u, const struct vec2 * v)
+vector_element vec2_dot(
+        const struct vec2 * u, const struct vec2 * v) [[gnu::nonnull(1, 2)]]
 {
     return u->x * v->x + u->y * v->y;
 }
 
 /* length of a vec3 */
-vector_element vec3_length(const struct vec3 * u)
+vector_element vec3_length(const struct vec3 * u) [[gnu::nonnull(1)]]
 {
     return sqrt(u->x * u->x + u->y * u->y + u->z * u->z);
 }
 
 /* normalize a vec3 */
-void vec3_normalize(struct vec3 * out, struct vec3 * u)
+void vec3_normalize(
+        struct vec3 * out, const struct vec3 * u) [[gnu::nonnull(1, 2)]]
 {
     vector_element m = sqrt(u->x * u->x + u->y * u->y + u->z * u->z);
     *out = (struct vec3) {
@@ -353,14 +356,18 @@ void vec3_normalize(struct vec3 * out, struct vec3 * u)
 }
 
 /* dot product of two vec3s */
-vector_element vec3_dot(const struct vec3 * u, const struct vec3 * v)
+vector_element vec3_dot(
+        const struct vec3 * u, const struct vec3 * v) [[gnu::nonnull(1)]]
 {
     return u->x * v->x + u->y * v->y + u->z * v->z;
 }
 
 /* cross product of two vec3s */
 void vec3_cross(
-        struct vec3 * out, const struct vec3 * u, const struct vec3 * v)
+        struct vec3 * out,
+        const struct vec3 * u,
+        const struct vec3 * v
+    ) [[gnu::nonnull(1, 2, 3)]]
 {
     *out = (struct vec3) {
         .x = u->y * v->z - u->z * v->y,
@@ -370,13 +377,14 @@ void vec3_cross(
 }
 
 /* length of a vec4 */
-vector_element vec4_length(const struct vec4 * u)
+vector_element vec4_length(const struct vec4 * u) [[gnu::nonnull(1)]]
 {
     return sqrt(u->x * u->x + u->y * u->y + u->z * u->z + u->w * u->w);
 }
 
 /* normalize a vec4 */
-void vec4_normalize(struct vec4 * out, struct vec4 * u)
+void vec4_normalize(
+        struct vec4 * out, const struct vec4 * u) [[gnu::nonnull(1, 2)]]
 {
     vector_element m =
         sqrt(u->x * u->x + u->y * u->y + u->z * u->z + u->w * u->w);
@@ -389,14 +397,18 @@ void vec4_normalize(struct vec4 * out, struct vec4 * u)
 }
 
 /* dot product of two vec4s */
-vector_element vec4_dot(const struct vec4 * u, const struct vec4 * v)
+vector_element vec4_dot(
+        const struct vec4 * u, const struct vec4 * v) [[gnu::nonnull(1, 2)]]
 {
     return u->x * v->x + u->y * v->y + u->z * v->z + u->w * v->w;
 }
 
 /* product of 4x4 matrix and vec4 */
 void matrix_multiply_vec4(
-        struct vec4 * out, const struct matrix * m, const struct vec4 * u)
+        struct vec4 * out,
+        const struct matrix * m,
+        const struct vec4 * u
+    ) [[gnu::nonnull(1, 2, 3)]]
 {
     *out = (struct vec4) {
         .x = m->matrix[0] * u->x + m->matrix[1] * u->y +
