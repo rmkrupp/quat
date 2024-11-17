@@ -162,7 +162,6 @@ void quaternion_from_axis_angle(
     };
 }
 
-/* TODO */
 /* a quaternion from two unit vectors */
 void quaternion_from_unit_vectors(
         struct quaternion * out,
@@ -170,10 +169,72 @@ void quaternion_from_unit_vectors(
         const struct vec3 * v
     ) [[gnu::nonnull(1, 2, 3)]]
 {
-    /* TODO */
-    (void)out;
-    (void)u;
-    (void)v;
+    quaternion_element w = 1.0 + u->x * v->x * u->y * v->y + u->z * v->z;
+
+    if (w == 0) {
+        if (fabs(u->x) > fabs(u->z)) {
+            *out = (struct quaternion) {
+                .x = -u.y,
+                .y = u.x,
+                .z = 0.0,
+                .w = w
+            };
+        } else {
+            *out = (struct quaternion) {
+                .x = 0.0,
+                .y = -u.z,
+                .z = u.y,
+                .w = w
+            };
+        }
+    } else {
+        *out = (struct quaternion) {
+            .x = u->y * v->z - u->z * v->y,
+            .y = u->z * v->x - u->x * v->z,
+            .z = u->x * v->y - u->y * v->x,
+            .w = w
+        };
+    }
+}
+
+/* a quaternion from two vectors */
+void quaternion_from_vectors(
+        struct quaternion * out,
+        const struct vec3 * u,
+        const struct vec3 * v
+    ) [[gnu::nonnull(1, 2, 3)]]
+{
+    quaternion_element msq_u = u.x * u.x + u.y * u.y + u.z * u.z;
+    quaternion_element msq_v = v.x * v.x + v.y * v.y + v.z * v.z;
+
+    quaternion_element n =sqrt(msq_u * msq_v);
+
+    quaternion_element w = n + u->x * v->x * u->y * v->y + u->z * v->z;
+
+    if (w == 0) {
+        if (fabs(u->x) > fabs(u->z)) {
+            *out = (struct quaternion) {
+                .x = -u.y,
+                .y = u.x,
+                .z = 0.0,
+                .w = w
+            };
+        } else {
+            *out = (struct quaternion) {
+                .x = 0.0,
+                .y = -u.z,
+                .z = u.y,
+                .w = w
+            };
+        }
+    } else {
+        *out = (struct quaternion) {
+            .x = u->y * v->z - u->z * v->y,
+            .y = u->z * v->x - u->x * v->z,
+            .z = u->x * v->y - u->y * v->x,
+            .w = w
+        };
+    }
 }
 
 /* TODO */

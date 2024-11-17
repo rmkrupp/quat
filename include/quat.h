@@ -131,9 +131,15 @@ void quaternion_from_axis_angle(
         double theta
     ) [[gnu::nonnull(1)]];
 
-/* TODO */
 /* a quaternion from two unit vectors */
 void quaternion_from_unit_vectors(
+        struct quaternion * out,
+        const struct vec3 * u,
+        const struct vec3 * v
+    ) [[gnu::nonnull(1, 2, 3)]];
+
+/* a quaternion from two vectors */
+void quaternion_from_vectors(
         struct quaternion * out,
         const struct vec3 * u,
         const struct vec3 * v
