@@ -174,16 +174,16 @@ void quaternion_from_unit_vectors(
     if (w == 0) {
         if (fabs(u->x) > fabs(u->z)) {
             *out = (struct quaternion) {
-                .x = -u.y,
-                .y = u.x,
+                .x = -u->y,
+                .y = u->x,
                 .z = 0.0,
                 .w = w
             };
         } else {
             *out = (struct quaternion) {
                 .x = 0.0,
-                .y = -u.z,
-                .z = u.y,
+                .y = -u->z,
+                .z = u->y,
                 .w = w
             };
         }
@@ -204,8 +204,8 @@ void quaternion_from_vectors(
         const struct vec3 * v
     ) [[gnu::nonnull(1, 2, 3)]]
 {
-    quaternion_element msq_u = u.x * u.x + u.y * u.y + u.z * u.z;
-    quaternion_element msq_v = v.x * v.x + v.y * v.y + v.z * v.z;
+    quaternion_element msq_u = u->x * u->x + u->y * u->y + u->z * u->z;
+    quaternion_element msq_v = v->x * v->x + v->y * v->y + v->z * v->z;
 
     quaternion_element n =sqrt(msq_u * msq_v);
 
@@ -214,16 +214,16 @@ void quaternion_from_vectors(
     if (w == 0) {
         if (fabs(u->x) > fabs(u->z)) {
             *out = (struct quaternion) {
-                .x = -u.y,
-                .y = u.x,
+                .x = -u->y,
+                .y = u->x,
                 .z = 0.0,
                 .w = w
             };
         } else {
             *out = (struct quaternion) {
                 .x = 0.0,
-                .y = -u.z,
-                .z = u.y,
+                .y = -u->z,
+                .z = u->y,
                 .w = w
             };
         }
@@ -248,7 +248,7 @@ void quaternion_slerp(
     quaternion_element cos_half_theta =
         a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w;
 
-    if (abs(cos_half_theta) >= 1.0) {
+    if (fabs(cos_half_theta) >= 1.0) {
         *out = *a;
         return;
     }
@@ -259,10 +259,10 @@ void quaternion_slerp(
             .x = -b->x,
             .y = -b->y,
             .z = b->z,
-            .w = -b->w;
+            .w = -b->w
         };
     } else {
-        bw = *b;
+        b2 = *b;
     }
 
     quaternion_element half_theta = acos(cos_half_theta);
@@ -270,12 +270,12 @@ void quaternion_slerp(
         sqrt(1.0 - cos_half_theta * cos_half_theta);
 
     /* some arbitrary cutoff constant */
-    if (abs(sin_half_theta) < 1e-12) {
+    if (fabs(sin_half_theta) < 1e-12) {
         *out = (struct quaternion) {
-            .x = (a->x + b->x) / 2,
-            .y = (a->y + b->y) / 2,
-            .z = (a->z + b->z) / 2,
-            .w = (a->w + b->w) / 2
+            .x = (a->x + b2.x) / 2,
+            .y = (a->y + b2.y) / 2,
+            .z = (a->z + b2.z) / 2,
+            .w = (a->w + b2.w) / 2
         };
         return;
     }
@@ -284,10 +284,10 @@ void quaternion_slerp(
     quaternion_element ratio_b = sin(t * half_theta) / sin_half_theta;
 
     *out = (struct quaternion) {
-        .x = a->x * ratio_a + b->x * ratio_b,
-        .y = a->y * ratio_a + b->y * ratio_b,
-        .z = a->z * ratio_a + b->z * ratio_b,
-        .w = a->w * ratio_a + b->w * ratio_b,
+        .x = a->x * ratio_a + b2.x * ratio_b,
+        .y = a->y * ratio_a + b2.y * ratio_b,
+        .z = a->z * ratio_a + b2.z * ratio_b,
+        .w = a->w * ratio_a + b2.w * ratio_b,
     };
 }
 
