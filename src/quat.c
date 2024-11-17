@@ -147,6 +147,36 @@ void quaternion_from_axis_angle(
     };
 }
 
+/* TODO */
+/* a quaternion from two unit vectors */
+void quaternion_from_unit_vectors(
+        struct quaternion * out,
+        const struct vec3 * u,
+        const struct vec3 * v
+    )
+{
+    /* TODO */
+    (void)out;
+    (void)u;
+    (void)v;
+}
+
+/* TODO */
+/* spherical linear interpolation of two quaternions */
+void quaternion_slerp(
+        struct quaternion * out,
+        const struct quaternion * a,
+        const struct quaternion * b,
+        quaternion_element t
+    )
+{
+    /* TODO */
+    (void)out;
+    (void)a;
+    (void)b;
+    (void)t;
+}
+
 /* set out to the identiy matrix */
 void matrix_identity(
         struct matrix * out
@@ -362,4 +392,23 @@ void vec4_normalize(struct vec4 * out, struct vec4 * u)
 vector_element vec4_dot(const struct vec4 * u, const struct vec4 * v)
 {
     return u->x * v->x + u->y * v->y + u->z * v->z + u->w * v->w;
+}
+
+/* product of 4x4 matrix and vec4 */
+void matrix_multiply_vec4(
+        struct vec4 * out, const struct matrix * m, const struct vec4 * u)
+{
+    *out = (struct vec4) {
+        .x = m->matrix[0] * u->x + m->matrix[1] * u->y +
+             m->matrix[2] * u->z + m->matrix[3] * u->w,
+
+        .y = m->matrix[4] * u->x + m->matrix[5] * u->y +
+             m->matrix[6] * u->z + m->matrix[7] * u->w,
+
+        .z = m->matrix[8] * u->x + m->matrix[9] * u->y +
+             m->matrix[10] * u->z + m->matrix[11] * u->w,
+
+        .w = m->matrix[12] * u->x * m->matrix[13] * u->y +
+             m->matrix[14] * u->z * m->matrix[15] * u->w
+    };
 }

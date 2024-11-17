@@ -124,6 +124,23 @@ void quaternion_from_axis_angle(
         double theta
     ) [[gnu::nonnull(1)]];
 
+/* TODO */
+/* a quaternion from two unit vectors */
+void quaternion_from_unit_vectors(
+        struct quaternion * out,
+        const struct vec3 * u,
+        const struct vec3 * v
+    );
+
+/* TODO */
+/* spherical linear interpolation of two quaternions */
+void quaternion_slerp(
+        struct quaternion * out,
+        const struct quaternion * a,
+        const struct quaternion * b,
+        quaternion_element t
+    );
+
 /* set out to the identiy matrix */
 void matrix_identity(
         struct matrix * out
@@ -183,5 +200,10 @@ void vec4_normalize(struct vec4 * out, struct vec4 * u);
 
 /* dot product of two vec4s */
 vector_element vec4_dot(const struct vec4 * u, const struct vec4 * v);
+
+/* product of 4x4 matrix and vec4 */
+void matrix_multiply_vec4(
+        struct vec4 * out, const struct matrix * m, const struct vec4 * u);
+
 
 #endif /* HASH_H */
