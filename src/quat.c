@@ -112,7 +112,7 @@ void quaternion_matrix(
 
         [4] = 2 * a->x * a->y + 2 * a->w * a->z,
         [5] = 1 - 2 * a->x * a->x - 2 * a->z * a->z,
-        [6] = 2 - a->y * a->z - 2 * a->w * a->x,
+        [6] = 2 * a->y * a->z - 2 * a->w * a->x,
         [7] = 0,
 
         [8] = 2 * a->x * a->z - 2 * a->w * a->y,
@@ -420,7 +420,7 @@ void matrix_multiply_vec4(
         .z = m->matrix[8] * u->x + m->matrix[9] * u->y +
              m->matrix[10] * u->z + m->matrix[11] * u->w,
 
-        .w = m->matrix[12] * u->x * m->matrix[13] * u->y +
-             m->matrix[14] * u->z * m->matrix[15] * u->w
+        .w = m->matrix[12] * u->x + m->matrix[13] * u->y +
+             m->matrix[14] * u->z + m->matrix[15] * u->w
     };
 }
