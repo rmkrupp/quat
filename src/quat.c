@@ -329,11 +329,29 @@ void matrix_perspective(
         matrix_element aspect
     ) [[gnu::nonnull(1)]]
 {
+    /*
     *out = (struct matrix) {{
         f_scale / aspect, 0, 0, 0,
         0, f_scale, 0, 0,
         0, 0, (z_far + z_near) / (z_near - z_far), -1,
         0, 0, (2 * z_far * z_near) / (z_near - z_far), 0
+    }};
+    */
+    /*
+    float f = tan(f_scale / 2.0);
+    *out = (struct matrix) {{
+        1.0 / (aspect * f), 0, 0, 0,
+        0, -1.0 / f, 0, 0,
+        0, 0, (z_far + z_near) / (z_far - z_near), 1,
+        0, 0, (2.0 * z_far * z_near) / (z_far - z_near), 0
+    }};
+    */
+    float f = tan(f_scale / 2.0);
+    *out = (struct matrix) {{
+        1.0 / (aspect * f), 0, 0, 0,
+        0, -1.0 / f, 0, 0,
+        0, 0, (z_far + z_near) / (z_far - z_near), (2.0 * z_far * z_near) / (z_far - z_near),
+        0, 0, 1, 0
     }};
 }
 
