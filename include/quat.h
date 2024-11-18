@@ -230,4 +230,11 @@ void matrix_multiply_vec4(
         const struct vec4 * u
     ) [[gnu::nonnull(1, 2, 3)]];
 
+/* product of a vec4 and a 4x4 matrix */
+void vec4_multiply_matrix(
+        struct vec4 * out,
+        const struct vec4 * u,
+        const struct matrix * m
+    ) [[gnu::nonnull(1, 2, 3)]];
+
 #endif /* QUAT_H */

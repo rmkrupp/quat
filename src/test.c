@@ -132,6 +132,12 @@ void expect_q(const struct quaternion * a, const struct quaternion * b)
     }
 }
 
+static void perspective_test(
+        const char * name,
+        struct vec4 * in,
+        struct matrix * matrix
+    );
+
 int main(int argc, char ** argv)
 {
     (void)argc;
@@ -332,11 +338,61 @@ int main(int argc, char ** argv)
         printf("output = %s\n", strof_q(&out));
         expect_q(&out, &(struct quaternion) { 55.0, 5.0, 85.0, 15.0 });
     }
-
-
     printf("\n");
+
+    {
+        /* in world coordinates:
+         *   -x is left, x is right
+         *   -y is down, y is up
+         *   -z is farther, z is nearer
+         */
+
+        struct vec4 left = { -1.0, 0.0, 0.0, 1.0 };
+        struct vec4 right = { 1.0, 0.0, 0.0, 1.0 };
+        struct vec4 down = { 0.0, -1.0, 0.0, 1.0 };
+        struct vec4 up = { 0.0, 1.0, 0.0, 1.0 };
+        struct vec4 far = { 0.0, 0.0, -1.0, 1.0 };
+        struct vec4 near = { 0.0, 0.0, 1.0, 1.0 };
+        struct vec4 center = { 0.0, 0.0, -0.0, 1.0 };
+
+        /* in vulkan:
+         * y goes from (-1, +1) from top to bottom
+         * x goes from (-1, +1) from left to right
+         * z goes from (0, 1) from near to far
+         *
+         * we must also correct for aspect (ratio of screen x to y)
+         */
+
+        struct matrix matrix_a;
+        struct matrix matrix;
+        matrix_translation(&matrix_a, 0, 0, -5);
+        matrix_perspective(&matrix, -0.1, -10.0, M_PI / 4, 1);
+        matrix_multiply(&matrix, &matrix, &matrix_a);
+
+        perspective_test("left", &left, &matrix);
+        perspective_test("right", &right, &matrix);
+        perspective_test("down", &down, &matrix);
+        perspective_test("up", &up, &matrix);
+        perspective_test("far", &far, &matrix);
+        perspective_test("near", &near, &matrix);
+        perspective_test("center", &center, &matrix);
+    }
+    printf("\n");
+
 
     printf("%zu unexpected\n", unexpected);
 
     free_string_pool();
+}
+
+static void perspective_test(
+        const char * name,
+        struct vec4 * in,
+        struct matrix * matrix
+    )
+{
+    struct vec4 out;
+    matrix_multiply_vec4(&out, matrix, in);
+    struct vec3 ndc = { out.x / out.w, out.y / out.w, out.z / out.w };
+    printf("%s %s\n", name, strof_v3(&ndc));
 }

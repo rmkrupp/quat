@@ -556,3 +556,25 @@ void matrix_multiply_vec4(
              m->matrix[14] * u->z + m->matrix[15] * u->w
     };
 }
+
+/* product of vec4 and 4x4 matrix  */
+void vec4_multiply_matrix(
+        struct vec4 * out,
+        const struct vec4 * u,
+        const struct matrix * m
+    ) [[gnu::nonnull(1, 2, 3)]]
+{
+    *out = (struct vec4) {
+        .x = m->matrix[0] * u->x + m->matrix[4] * u->y +
+             m->matrix[8] * u->z + m->matrix[12] * u->w,
+
+        .y = m->matrix[1] * u->x + m->matrix[5] * u->y +
+             m->matrix[9] * u->z + m->matrix[13] * u->w,
+
+        .z = m->matrix[2] * u->x + m->matrix[6] * u->y +
+             m->matrix[10] * u->z + m->matrix[14] * u->w,
+
+        .w = m->matrix[3] * u->x + m->matrix[7] * u->y +
+             m->matrix[11] * u->z + m->matrix[15] * u->w
+    };
+}
