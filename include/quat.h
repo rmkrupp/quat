@@ -167,6 +167,17 @@ void matrix_translation(
         matrix_element z
     ) [[gnu::nonnull(1)]];
 
+/* set out to a translation matrix for vector <x y z> */
+void matrix_translation_scale(
+        struct matrix * out,
+        matrix_element x,
+        matrix_element y,
+        matrix_element z,
+        matrix_element sx,
+        matrix_element sy,
+        matrix_element sz
+    ) [[gnu::nonnull(1)]];
+
 /* set out to a perspective matrix with these properties */
 void matrix_perspective(
         struct matrix * out,
