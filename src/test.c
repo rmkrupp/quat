@@ -379,6 +379,21 @@ int main(int argc, char ** argv)
     }
     printf("\n");
 
+    {
+        struct matrix matrix_a;
+        struct matrix matrix_b;
+        struct matrix matrix_c;
+        struct quaternion q;
+        quaternion_from_axis_angle(&q, 1.0, 0.2, -3.3, 1.04567);
+        quaternion_normalize(&q, &q);
+        quaternion_matrix(&matrix_a, &q);
+        matrix_inverse(&matrix_b, &matrix_a);
+        matrix_multiply(&matrix_c, &matrix_a, &matrix_b);
+        printf("%s\n", strof_m(&matrix_c));
+    }
+    printf("\n");
+
+
 
     printf("%zu unexpected\n", unexpected);
 
