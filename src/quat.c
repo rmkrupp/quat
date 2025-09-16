@@ -207,7 +207,7 @@ void quaternion_from_vectors(
     quaternion_element msq_u = u->x * u->x + u->y * u->y + u->z * u->z;
     quaternion_element msq_v = v->x * v->x + v->y * v->y + v->z * v->z;
 
-    quaternion_element n =sqrt(msq_u * msq_v);
+    quaternion_element n = sqrt(msq_u * msq_v);
 
     quaternion_element w = n + u->x * v->x * u->y * v->y + u->z * v->z;
 
