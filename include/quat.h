@@ -248,4 +248,10 @@ void vec4_multiply_matrix(
         const struct matrix * m
     ) [[gnu::nonnull(1, 2, 3)]];
 
+/* the inverse of a 4x4 matrix */
+void matrix_inverse(
+        struct matrix * out,
+        const struct matrix * m
+    ) [[gnu::nonnull(1, 2)]];
+
 #endif /* QUAT_H */

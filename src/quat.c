@@ -595,3 +595,271 @@ void vec4_multiply_matrix(
              m->matrix[11] * u->z + m->matrix[15] * u->w
     };
 }
+
+/* the inverse of a 4x4 matrix */
+void matrix_inverse(
+        struct matrix * out,
+        const struct matrix * m
+    ) [[gnu::nonnull(1, 2)]]
+{
+    double a, b, c, d, e, f, g, h, i;
+
+    /* determinant of (0,0) minor */
+    a = m->matrix[1 + 4 * 1];
+    b = m->matrix[2 + 4 * 1];
+    c = m->matrix[3 + 4 * 1];
+    d = m->matrix[1 + 4 * 2];
+    e = m->matrix[2 + 4 * 2];
+    f = m->matrix[3 + 4 * 2];
+    g = m->matrix[1 + 4 * 3];
+    h = m->matrix[2 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d00 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (1,0) minor */
+    a = m->matrix[0 + 4 * 1];
+    b = m->matrix[2 + 4 * 1];
+    c = m->matrix[3 + 4 * 1];
+    d = m->matrix[0 + 4 * 2];
+    e = m->matrix[2 + 4 * 2];
+    f = m->matrix[3 + 4 * 2];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[2 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d10 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (2,0) minor */
+    a = m->matrix[0 + 4 * 1];
+    b = m->matrix[1 + 4 * 1];
+    c = m->matrix[3 + 4 * 1];
+    d = m->matrix[0 + 4 * 2];
+    e = m->matrix[1 + 4 * 2];
+    f = m->matrix[3 + 4 * 2];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[1 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d20 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (3,0) minor */
+    a = m->matrix[0 + 4 * 1];
+    b = m->matrix[1 + 4 * 1];
+    c = m->matrix[2 + 4 * 1];
+    d = m->matrix[0 + 4 * 2];
+    e = m->matrix[1 + 4 * 2];
+    f = m->matrix[2 + 4 * 2];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[1 + 4 * 3];
+    i = m->matrix[2 + 4 * 3];
+    matrix_element d30 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (0,1) minor */
+    a = m->matrix[1 + 4 * 0];
+    b = m->matrix[2 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[1 + 4 * 2];
+    e = m->matrix[2 + 4 * 2];
+    f = m->matrix[3 + 4 * 2];
+    g = m->matrix[1 + 4 * 3];
+    h = m->matrix[2 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d01 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (1,1) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[2 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[0 + 4 * 2];
+    e = m->matrix[2 + 4 * 2];
+    f = m->matrix[3 + 4 * 2];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[2 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d11 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (2,1) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[1 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[0 + 4 * 2];
+    e = m->matrix[1 + 4 * 2];
+    f = m->matrix[3 + 4 * 2];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[1 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d21 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (3,1) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[1 + 4 * 0];
+    c = m->matrix[2 + 4 * 0];
+    d = m->matrix[0 + 4 * 2];
+    e = m->matrix[1 + 4 * 2];
+    f = m->matrix[2 + 4 * 2];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[1 + 4 * 3];
+    i = m->matrix[2 + 4 * 3];
+    matrix_element d31 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (0,2) minor */
+    a = m->matrix[1 + 4 * 0];
+    b = m->matrix[2 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[1 + 4 * 1];
+    e = m->matrix[2 + 4 * 1];
+    f = m->matrix[3 + 4 * 1];
+    g = m->matrix[1 + 4 * 3];
+    h = m->matrix[2 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d02 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (1,2) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[2 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[0 + 4 * 1];
+    e = m->matrix[2 + 4 * 1];
+    f = m->matrix[3 + 4 * 1];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[2 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d12 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (2,2) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[1 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[0 + 4 * 1];
+    e = m->matrix[1 + 4 * 1];
+    f = m->matrix[3 + 4 * 1];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[1 + 4 * 3];
+    i = m->matrix[3 + 4 * 3];
+    matrix_element d22 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (3,2) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[1 + 4 * 0];
+    c = m->matrix[2 + 4 * 0];
+    d = m->matrix[0 + 4 * 1];
+    e = m->matrix[1 + 4 * 1];
+    f = m->matrix[2 + 4 * 1];
+    g = m->matrix[0 + 4 * 3];
+    h = m->matrix[1 + 4 * 3];
+    i = m->matrix[2 + 4 * 3];
+    matrix_element d32 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (0,3) minor */
+    a = m->matrix[1 + 4 * 0];
+    b = m->matrix[2 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[1 + 4 * 1];
+    e = m->matrix[2 + 4 * 1];
+    f = m->matrix[3 + 4 * 1];
+    g = m->matrix[1 + 4 * 2];
+    h = m->matrix[2 + 4 * 2];
+    i = m->matrix[3 + 4 * 2];
+    matrix_element d03 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (1,3) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[2 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[0 + 4 * 1];
+    e = m->matrix[2 + 4 * 1];
+    f = m->matrix[3 + 4 * 1];
+    g = m->matrix[0 + 4 * 2];
+    h = m->matrix[2 + 4 * 2];
+    i = m->matrix[3 + 4 * 2];
+    matrix_element d13 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (2,3) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[1 + 4 * 0];
+    c = m->matrix[3 + 4 * 0];
+    d = m->matrix[0 + 4 * 1];
+    e = m->matrix[1 + 4 * 1];
+    f = m->matrix[3 + 4 * 1];
+    g = m->matrix[0 + 4 * 2];
+    h = m->matrix[1 + 4 * 2];
+    i = m->matrix[3 + 4 * 2];
+    matrix_element d23 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of (3,3) minor */
+    a = m->matrix[0 + 4 * 0];
+    b = m->matrix[1 + 4 * 0];
+    c = m->matrix[2 + 4 * 0];
+    d = m->matrix[0 + 4 * 1];
+    e = m->matrix[1 + 4 * 1];
+    f = m->matrix[2 + 4 * 1];
+    g = m->matrix[0 + 4 * 2];
+    h = m->matrix[1 + 4 * 2];
+    i = m->matrix[2 + 4 * 2];
+    matrix_element d33 =
+        a * (e * i - f * h) -
+        b * (d * i - f * g) +
+        c * (d * h - e * g);
+
+    /* determinant of whole matrix */
+    matrix_element determinant =
+        + d00 * m->matrix[0 + 4 * 0]
+        - d10 * m->matrix[1 + 4 * 0]
+        + d20 * m->matrix[2 + 4 * 0]
+        - d30 * m->matrix[3 + 4 * 0];
+
+    matrix_element r_d = 1.0 / determinant;
+
+    *out = (struct matrix) {
+        {
+            d00 * r_d, -d01 * r_d,  d02 * r_d, -d03 * r_d,
+           -d10 * r_d,  d11 * r_d, -d12 * r_d,  d13 * r_d,
+            d20 * r_d, -d21 * r_d,  d22 * r_d, -d23 * r_d,
+           -d30 * r_d,  d31 * r_d, -d32 * r_d,  d33 * r_d
+        }
+    };
+}
+
